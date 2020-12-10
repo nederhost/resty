@@ -7,5 +7,12 @@ setup(
     version='0.9',
     description='Generic REST client library',
     author='Sebastiaan Hoogeveen',
-    packages=['resty']
+    packages=['resty'],
+    install_requires=[
+      're',
+      'urllib',
+      'base64',
+      'json',
+      'xml.etree'
+    ]
 )
