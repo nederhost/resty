@@ -1,0 +1,54 @@
+import resty.client
+import resty.data.xml.elementtree
+import resty.auth
+import resty.auth.basicauth as basicauth
+
+class vCloudClient(resty.client.Client):
+
+    def __init__(self, *arg, api_version='34.0', **kwarg):
+        resty.client.Client.__init__(
+            self, 
+            *arg,
+            serializer=resty.data.xml.elementtree.Serializer(),
+            parser=resty.data.xml.elementtree.Parser(),
+            auth=resty.api.vcloud.Auth(),
+            **kwarg
+        )
+        self.api_version = api_version
+        
+    def request_hook(self, request):
+        request.headers['Accept'] = 'application/*;version={0}'.format(self.api_version)
+
+#
+# On setting the authorization information we do a call to a URL with HTTP
+# Basic Authentication to get a token; the token is used in the rest of the
+# requests.
+        
+class Auth(resty.auth.AuthBase):
+
+    def __init__(self):
+        self.basicauth = None
+        self.token = None
+
+    def add_authorization(self, request):
+        if self.token:
+            request.headers['x-vcloud-authorization'] = self.token
+        elif self.basicauth:
+            self.basicauth.add_authorization(request)
+
+    def set_authorization(self, username, organization, password):
+        # Get the URL we should use for logging in.
+#        response = self.client.route('sessions').get()
+        # We use HTTP Basic Auth to get a session token that is used for
+        # subsequent requests.
+        self.basicauth = basicauth.Authorization()
+        self.basicauth.set_client(self.client)
+        self.basicauth.set_authorization(
+            username='{0}@{1}'.format(username, organization),
+            password=password
+        )
+        response = self.client.route('sessions').post()
+        if 'x-vcloud-authorization' in response.headers:
+            self.token = response.headers['x-vcloud-authorization']
+        else:
+            raise resty.exception.AuthenticationFailed()
