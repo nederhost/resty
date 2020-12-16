@@ -14,6 +14,6 @@ setup(
       'urllib',
       'base64',
       'json',
-      'xml.etree'
+      'xml.etree.ElementTree'
     ]
 )
