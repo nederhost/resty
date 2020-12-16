@@ -10,9 +10,5 @@ setup(
     author='Sebastiaan Hoogeveen',
     packages=find_packages(),
     install_requires=[
-      're',
-      'urllib',
-      'base64',
-      'json'
     ]
 )
