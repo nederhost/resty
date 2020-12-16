@@ -13,7 +13,6 @@ setup(
       're',
       'urllib',
       'base64',
-      'json',
-      'xml.etree.ElementTree'
+      'json'
     ]
 )
