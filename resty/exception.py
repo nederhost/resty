@@ -1,12 +1,12 @@
 class BaseException(Exception):
-  
+
     def __init__(self, client, request=None, response=None, msg=None, status=None):
         self.client = client
         self.request = request
         self.response = response
         self.status = status
         self.msg = msg
-        
+
     def __str__(self):
         method = ''
         route = ''
@@ -21,7 +21,7 @@ class BaseException(Exception):
             method,
             route
         )
-        
+
 class ParseError(BaseException):
     pass
 
@@ -34,9 +34,9 @@ class ClientError(OperationalException):
 
 class AuthenticationFailed(ClientError):
     pass
-     
+
 class NotFound(ClientError):
     pass
-    
+
 class AccessDenied(ClientError):
     pass

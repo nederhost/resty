@@ -8,4 +8,3 @@ class Authorization(headerauth.Authorization):
             type='Basic',
             token=base64.b64encode('{0}:{1}'.format(username, password).encode())
         )
-        

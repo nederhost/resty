@@ -5,4 +5,3 @@ class SerializerBase(resty.base.ImplementationBase):
 
 class ParserBase(resty.base.ImplementationBase):
     pass
-    
