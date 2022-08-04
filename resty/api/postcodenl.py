@@ -3,15 +3,12 @@ Postcode.NL API client.
 
 # Usage
 ```
-import resty.api.kvknl
+import resty.api.postcodenl
 
 client = resty.api.postcodenl.PostcodeNLClient()
 client.set_authorization('username', 'password')
 root = client.api
-
-organisations = root.zoeken.get(handelsnaam='NederHost'
-
-
+address = root.addresses.route('1234AB').route('123').get()
 ```
 """
 
