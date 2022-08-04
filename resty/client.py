@@ -33,6 +33,7 @@ class Client:
         self.debuglevel = debuglevel
         self.configuration = kwargs
         self.session = {}
+        self.api = self.route(self.root)
 
     def debuginfo(self, msg, marker='-'):
         if marker:
@@ -72,7 +73,7 @@ class Client:
 
         return response
 
-    def route(self, route, always_relative=False):
+    def route(self, route='', always_relative=False):
         if always_relative or not route.startswith(self.root):
             return Route(self, '/'.join([self.root, route]))
         else:
