@@ -13,7 +13,6 @@ payments = client.payments.get()
 """
 
 import resty.client
-import resty.data.xml.elementtree
 import resty.auth
 
 class MollieClient(resty.client.Client):

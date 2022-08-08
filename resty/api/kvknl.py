@@ -13,7 +13,6 @@ print(organisations.content)
 """
 
 import resty.client
-import resty.data.xml.elementtree
 import resty.auth
 
 import resty.auth.headerauth
