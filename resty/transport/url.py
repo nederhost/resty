@@ -20,22 +20,21 @@ class Transport(resty.transport.TransportBase):
             if request.parameters:
                 url += '?' + urllib.parse.urlencode(request.parameters)
                 request.data = None
-        if request.data:           
-            m = self.RE_charset.match(request.headers['Content-Type'])
-            if m:
-                body = request.data.encode(m.group(1))
+        if request.data:
+            for header, value in request.headers.items():
+                if header.lower() == 'content-type':
+                    m = self.RE_charset.match(value)
+                    if m:
+                        body = request.data.encode(m.group(1))
+                        break
             else:
                 body = request.data.encode(self.default_charset)
         else:
             body = None
         if body is None: 
-            try:
-                del request.headers['Content-Type']
-                del request.headers['Content-Length']
-                del request.headers['content-type']
-                del request.headers['content-length']
-            except KeyError:
-                pass
+            for header in request.headers:
+                if header.lower() in ('content-type', 'content-length'):
+                    del request.headers[header]
         urlrequest = urllib.request.Request(url, body, request.headers, method=request.method)
         if self.client.debuglevel > 0: self.client.debuginfo(self._urlrequest_as_string(urlrequest), '>')
         try:

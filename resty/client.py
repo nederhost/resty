@@ -89,7 +89,7 @@ class Route:
         self._route = route
 
     def __getattr__(self, name):
-        # This makes stuff like some_object->some_subresource->method->post() work.
+        # This makes stuff like some_object.some_subresource.method.post() work.
         return self.route(name)
 
     def __str__(self):
@@ -153,7 +153,7 @@ class Request:
 
     def set_data(self, data, contenttype):
         self.data = data
-        if 'Content-Type' not in self.headers:
+        if 'content-type' not in [h.lower() for h in self.headers]:
             self.headers['Content-Type'] = contenttype
 
 class Response:
