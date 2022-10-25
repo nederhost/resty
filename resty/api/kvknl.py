@@ -31,6 +31,7 @@ class KvKClient(resty.client.Client):
             self,
             root=url,
             auth=resty.auth.headerauth.Authorization(headername='apikey', type=None),
+            transport=resty.transport.url.Transport(default_charset='utf-8'),
             *arg,
             **kwarg
         )

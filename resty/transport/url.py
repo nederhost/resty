@@ -7,9 +7,10 @@ import urllib.request
 
 class Transport(resty.transport.TransportBase):
 
-    default_charset = 'iso-8859-1'
-
     RE_charset = re.compile('; charset=(\S+)')
+    
+    def __init__(self, default_charset='iso-8859-1'):
+        self.default_charset = default_charset
 
     def process_request(self, request):
         url = request.route
