@@ -33,7 +33,7 @@ class Transport(resty.transport.TransportBase):
         else:
             body = None
         if body is None: 
-            for header in request.headers:
+            for header in request.headers.keys():
                 if header.lower() in ('content-type', 'content-length'):
                     del request.headers[header]
         urlrequest = urllib.request.Request(url, body, request.headers, method=request.method)
