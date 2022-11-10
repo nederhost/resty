@@ -2,6 +2,7 @@
 JSON serializer and parser.
 """
 
+import decimal
 import json
 
 import resty.data
@@ -22,7 +23,7 @@ class Serializer(resty.data.SerializerBase):
         See json.dumps() for more information on serializing Python objects.
         """
         if request.parameters is not None:
-            request.set_data(json.dumps(request.parameters), self.contenttype)
+            request.set_data(json.dumps(request.parameters, default=serializer), self.contenttype)
 
 class Parser(resty.data.ParserBase):
     """
@@ -36,3 +37,10 @@ class Parser(resty.data.ParserBase):
         See json.loads() for more information.
         """
         response.content = json.loads(response.raw_response)
+
+def serializer(object):
+    """
+    Support for some additional data types.
+    """
+    if isinstance(object, decimal.Decimal):
+        return float(object)
