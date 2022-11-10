@@ -8,19 +8,16 @@ class BaseException(Exception):
         self.msg = msg
 
     def __str__(self):
-        method = ''
-        route = ''
-        try:
-            method = self.request.method
-            route = self.request.route
-        except Exception:
-            pass
-        return '{0} "{1}" while executing {2} {3}'.format(
-            getattr(self, 'status', self.__class__.__name__),
-            getattr(self, 'msg', ''),
-            method,
-            route
+        t = '{0} "{1}"'.format(
+          getattr(self, 'status', self.__class__.__name__),
+          getattr(self, 'msg', ''),
         )
+        try:
+            if self.request:
+                t = t + f' during {self.request}'
+        except AttributeError:
+            pass
+        return t
 
 class ParseError(BaseException):
     pass
