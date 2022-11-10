@@ -44,3 +44,4 @@ def serializer(object):
     """
     if isinstance(object, decimal.Decimal):
         return float(object)
+    raise TypeError(f'Object {object} is not serializable')
