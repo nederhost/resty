@@ -20,14 +20,27 @@ class MollieClient(resty.client.Client):
     The Mollie API client.
     """
 
-    def __init__(self, *arg, url='https://api.mollie.nl/v2', **kwarg):
+    def __init__(self, *arg, url='https://api.mollie.nl/v2', testmode=False, **kwarg):
         """
         Arguments in addition to those of the base class:
         * url -- the URL of the Mollie API
+        * testmode -- if true enable testmode for all calls through this
+          client (required when testing with organizational access tokens)
         """
+        self.testmode = testmode
         resty.client.Client.__init__(
             self,
             root=url,
             *arg,
             **kwarg
         )
+
+    def serialize_hook(self, request):
+        if self.testmode:
+            if request.parameters is None:
+                request.parameters = {}
+            if request.method == 'GET':
+                request.parameters['testmode'] = 'true'
+            else:
+                request.parameters['testmode'] = True
+            
