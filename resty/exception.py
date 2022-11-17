@@ -18,6 +18,8 @@ class BaseException(Exception):
         except AttributeError:
             pass
         return t
+        
+    __repr__ = __str__
 
 class ParseError(BaseException):
     pass
