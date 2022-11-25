@@ -14,8 +14,7 @@ class Client:
         parser=resty.data.json.Parser(),
         auth=resty.auth.headerauth.Authorization(),
         transport=resty.transport.url.Transport(),
-        debuglevel=0,
-        **kwargs
+        debuglevel=0
     ):
         self.root = root if root else ''
         self.serializer = serializer
@@ -31,7 +30,6 @@ class Client:
         if self.transport:
             self.transport.set_client(self)
         self.debuglevel = debuglevel
-        self.configuration = kwargs
         self.session = {}
         self.api = self.route(self.root)
 
