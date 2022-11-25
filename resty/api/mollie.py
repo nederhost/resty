@@ -27,13 +27,13 @@ class MollieClient(resty.client.Client):
         * testmode -- if true enable testmode for all calls through this
           client (required when testing with organizational access tokens)
         """
-        self.testmode = testmode
         resty.client.Client.__init__(
             self,
             root=url,
             *arg,
             **kwarg
         )
+        self.testmode = testmode
 
     def serialize_hook(self, request):
         if self.testmode:
