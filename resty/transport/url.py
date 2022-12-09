@@ -45,7 +45,9 @@ class Transport(resty.transport.TransportBase):
         try:
             urlresponse = self.opener.open(urlrequest)
         except urllib.error.HTTPError as e:
-            if e.code >= 400:
+            if e.code < 400:
+                urlresponse = e
+            else:
                 if e.code == 401:
                     exception_class = resty.exception.AuthenticationFailed
                 elif e.code == 403:
