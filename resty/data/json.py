@@ -31,12 +31,16 @@ class Parser(resty.data.ParserBase):
     """
 
     def parse(self, response): # pylint: disable=no-self-use
-        """
-        Parse the JSON response to Python objects.
+        """ 
+        
+        Parse the JSON of any response that either has no content-type
+        header or a content-type header with MIME type 'application/json' to
+        Python objects.
 
         See json.loads() for more information.
         """
-        response.content = json.loads(response.raw_response)
+        if 'content-type' not in response.headers or response.headers['content-type'] == 'application/json':
+            response.content = json.loads(response.raw_response)
 
 def serializer(object):
     """
