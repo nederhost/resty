@@ -105,5 +105,5 @@ class Transport(resty.transport.TransportBase):
              
 # This is apparantly the "simplest" way to disable redirects.
 class NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, **kwarg):
+    def redirect_request(self, *arg, **kwarg):
         return None
