@@ -1,3 +1,4 @@
+import logging
 import sys
 
 import resty.exception
@@ -40,7 +41,7 @@ class Client:
                 self,
                 msg
             )
-        print(msg, file=sys.stderr)
+        logging.debug(msg)
 
     def execute(self, request):
 
