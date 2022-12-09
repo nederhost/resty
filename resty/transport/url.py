@@ -45,17 +45,18 @@ class Transport(resty.transport.TransportBase):
         try:
             urlresponse = self.opener.open(urlrequest)
         except urllib.error.HTTPError as e:
-            if e.code == 401:
-                exception_class = resty.exception.AuthenticationFailed
-            elif e.code == 403:
-                exception_class = resty.exception.AccessDenied
-            elif e.code == 404:
-                exception_class = resty.exception.NotFound
-            elif e.code < 500:
-                exception_class = resty.exception.ClientError
-            else:
-                exception_class = resty.exception.ServerError
-            raise exception_class(self.client, request, msg=e.reason, status=e.code)
+            if e.code >= 400:
+                if e.code == 401:
+                    exception_class = resty.exception.AuthenticationFailed
+                elif e.code == 403:
+                    exception_class = resty.exception.AccessDenied
+                elif e.code == 404:
+                    exception_class = resty.exception.NotFound
+                elif e.code < 500:
+                    exception_class = resty.exception.ClientError
+                else:
+                    exception_class = resty.exception.ServerError
+                raise exception_class(self.client, request, msg=e.reason, status=e.code)
         data = urlresponse.read()
         if self.client.debuglevel > 0: self.client.debuginfo(self._urlresponse_as_string(urlresponse, data), '<')
 
