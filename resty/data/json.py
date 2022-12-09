@@ -39,7 +39,11 @@ class Parser(resty.data.ParserBase):
 
         See json.loads() for more information.
         """
-        if 'content-type' not in response.headers or response.headers['content-type'] == 'application/json':
+        if (
+          'content-type' not in response.headers or
+          response.headers['content-type'].endswith('/json') or
+          response.headers['content-type'].endswith('+json')
+        )
             response.content = json.loads(response.raw_response)
 
 def serializer(object):
