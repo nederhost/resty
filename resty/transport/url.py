@@ -9,8 +9,12 @@ class Transport(resty.transport.TransportBase):
 
     RE_charset = re.compile('; charset=(\S+)')
     
-    def __init__(self, default_charset='iso-8859-1'):
+    def __init__(self, default_charset='iso-8859-1', follow_redirects=False):
         self.default_charset = default_charset
+        handlers = []
+        if not follow_redirects:
+            handlers.append(NoRedirect)
+        self.opener = urllib.request.build_opener(*handlers)
 
     def process_request(self, request):
         url = request.route
@@ -39,7 +43,7 @@ class Transport(resty.transport.TransportBase):
         urlrequest = urllib.request.Request(url, body, request.headers, method=request.method)
         if self.client.debuglevel > 0: self.client.debuginfo(self._urlrequest_as_string(urlrequest), '>')
         try:
-            urlresponse = urllib.request.urlopen(urlrequest)
+            urlresponse = self.opener.open(urlrequest)
         except urllib.error.HTTPError as e:
             if e.code == 401:
                 exception_class = resty.exception.AuthenticationFailed
@@ -98,3 +102,8 @@ class Transport(resty.transport.TransportBase):
             data.decode()
         )
              
+             
+# This is apparantly the "simplest" way to disable redirects.
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, **kwarg):
+        return None
