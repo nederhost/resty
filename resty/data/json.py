@@ -41,8 +41,7 @@ class Parser(resty.data.ParserBase):
         """
         if (
           'content-type' not in response.headers or
-          response.headers['content-type'].endswith('/json') or
-          response.headers['content-type'].endswith('+json')
+          'json' in response.headers['content-type']
         ):
             response.content = json.loads(response.raw_response)
 

@@ -59,7 +59,7 @@ class Client:
         if hasattr(self, 'request_hook'): self.request_hook(request)
         if self.debuglevel > 1: self.debuginfo(request, '>')
         response = self.transport.process_request(request)
-        if self.debuglevel > 1: self.debuginfo(response, '>')
+        if self.debuglevel > 1: self.debuginfo(response, '<')
         if hasattr(self, 'response_hook'): self.response_hook(response, request)
 
         # Replace the 'response' element with a parsed version.
