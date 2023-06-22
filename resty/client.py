@@ -6,6 +6,9 @@ import resty.data.json
 import resty.auth.headerauth
 import resty.transport.url
 
+log = logging.getLogger(__name__)
+
+
 class Client:
 
     def __init__(
@@ -41,7 +44,7 @@ class Client:
                 self,
                 msg
             )
-        logging.debug(msg)
+        log.debug(msg)
 
     def execute(self, request):
 
