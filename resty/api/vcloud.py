@@ -18,19 +18,27 @@ disk = client.filter(client.route('query').get(type='disk').record, {'name': 'my
 """
 #pylint: disable=bad-continuation
 
+import logging
+import time
+import urllib.error
+
 import resty.client
 import resty.auth
 import resty.auth.basicauth as basicauth
+
+log = logging.getLogger(__name__)
 
 class VCloudClient(resty.client.Client):
     """
     VMWARE vCloud Director API client.
     """
 
-    def __init__(self, *arg, api_version='34.0', **kwarg):
+    def __init__(self, *arg, api_version='34.0', autoretry=False, **kwarg):
         """
         Arguments in addition to those of the base class:
         * api_version -- the API version to be used
+        * autoretry -- whether to automatically retry any API request upon
+          any apparant I/O error
         """
         resty.client.Client.__init__(
           self,
@@ -39,6 +47,19 @@ class VCloudClient(resty.client.Client):
           **kwarg
         )
         self.api_version = api_version
+        self.autoretry = autoretry
+
+    def execute(self, request):
+        # Wrapper to catch any retryable exception.
+        while True:
+            try:
+                return super().execute(request)
+            except (urllib.error.URLError, ConnectionError):
+                if self.autoretry:
+                    log.exception('While executing %s', request)
+                    time.sleep(3)
+                else:
+                    raise
 
     def serialize_hook(self, request): # pylint: disable=no-self-use
         """
