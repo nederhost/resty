@@ -43,4 +43,3 @@ class MollieClient(resty.client.Client):
                 request.parameters['testmode'] = 'true'
             else:
                 request.parameters['testmode'] = True
-            
