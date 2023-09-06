@@ -137,12 +137,12 @@ class Route:
 
 class Request:
 
-    def __init__(self, method, route, positional, parameters, headers={}):
+    def __init__(self, method, route, positional, parameters, headers=None):
         self.method = method
         self.route = route
         self.positional = positional
         self.parameters = parameters
-        self.headers = headers
+        self.headers = headers if headers else {}
         self.data = None
 
     def __str__(self):
