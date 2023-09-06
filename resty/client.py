@@ -160,9 +160,9 @@ class Request:
 
 class Response:
 
-    def __init__(self, raw_response, headers={}):
+    def __init__(self, raw_response, headers=None):
         self.raw_response = raw_response
-        self.headers = headers
+        self.headers = headers if headers else {}
         self.content = None
 
     # Make any response fields that does not clash with the builtins available as attributes.
