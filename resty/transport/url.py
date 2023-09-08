@@ -9,7 +9,7 @@ class Transport(resty.transport.TransportBase):
 
     RE_charset = re.compile('; charset=(\S+)')
     
-    def __init__(self, default_charset='iso-8859-1', follow_redirects=False):
+    def __init__(self, default_charset='utf-8', follow_redirects=False):
         self.default_charset = default_charset
         handlers = []
         if not follow_redirects:
