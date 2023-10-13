@@ -66,7 +66,7 @@ class Doveadm:
             type, response, tag = self._client.api.post([name, arguments, _tag if _tag else name]).content[0]
             if type == 'error':
                 raise resty.exception.ClientError(
-                  client=client,
+                  client=self._client,
                   request=[name, arguments, _tag],
                   response=response,
                   msg=f"{response.get('exitCode', '')} {response.get('type', '')}",
