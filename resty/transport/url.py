@@ -45,6 +45,7 @@ class Transport(resty.transport.TransportBase):
         try:
             urlresponse = self.opener.open(urlrequest)
         except urllib.error.HTTPError as e:
+            if self.client.debuglevel > 0: self.client.debuginfo(self._urlresponse_as_string(e, e.fp.read()), '<')
             if e.code < 400:
                 urlresponse = e
             else:
