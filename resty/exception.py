@@ -1,11 +1,12 @@
 class BaseException(Exception):
 
-    def __init__(self, client, request=None, response=None, msg=None, status=None):
+    def __init__(self, client, request=None, response=None, msg=None, status=None, content=None):
         self.client = client
         self.request = request
         self.response = response
         self.status = status
         self.msg = msg
+        self.content = content
 
     def __str__(self):
         t = '{0} "{1}"'.format(

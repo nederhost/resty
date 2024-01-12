@@ -59,7 +59,7 @@ class Transport(resty.transport.TransportBase):
                     exception_class = resty.exception.ClientError
                 else:
                     exception_class = resty.exception.ServerError
-                raise exception_class(self.client, request, msg=e.reason, status=e.code) from e
+                raise exception_class(self.client, request, msg=e.reason, status=e.code, content=e.read()) from e
         data = urlresponse.read()
         if self.client.debuglevel > 0: self.client.debuginfo(self._urlresponse_as_string(urlresponse, data), '<')
 
