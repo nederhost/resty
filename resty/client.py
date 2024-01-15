@@ -1,5 +1,6 @@
 import logging
 import sys
+import urllib.parse
 
 import resty.exception
 import resty.data.json
@@ -76,10 +77,11 @@ class Client:
         return response
 
     def route(self, route='', always_relative=False):
-        if always_relative or not route.startswith(self.root):
-            return Route(self, '/'.join([self.root, route]))
-        else:
-            return Route(self, route)
+        if not always_relative:
+            absolute_route = urllib.parse.urljoin(self.root, route)
+            if absolute_route.startswith(self.root):
+                return Route(self, absolute_root)
+        return Route(self, '/'.join([self.root, route]))
 
     def set_authorization(self, *args, **kwargs):
         self.auth.set_authorization(*args, **kwargs)
