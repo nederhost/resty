@@ -80,7 +80,7 @@ class Client:
         if not always_relative:
             absolute_route = urllib.parse.urljoin(self.root, route)
             if absolute_route.startswith(self.root):
-                return Route(self, absolute_root)
+                return Route(self, absolute_route)
         return Route(self, '/'.join([self.root, route]))
 
     def set_authorization(self, *args, **kwargs):
