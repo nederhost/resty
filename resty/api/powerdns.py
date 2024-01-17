@@ -40,3 +40,9 @@ class PowerDNSClient(resty.client.Client):
 
     def request_hook(self, request):
         request.headers['Accept'] = 'application/json'
+        
+    def serialize_hook(self, request):
+        # All parameters are positional for POST, PATCH and PUT requests.
+        if request.method in ('PUT', 'POST', 'PATCH'):
+            request.parameters = request.positional
+            request.positional = None
