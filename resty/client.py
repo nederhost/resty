@@ -76,10 +76,10 @@ class Client:
 
         return response
 
-    def route(self, route='', always_relative=False):
+    def route(self, route='', always_relative=False, allow_outside_root=False):
         if not always_relative:
             absolute_route = urllib.parse.urljoin(self.root, route)
-            if absolute_route.startswith(self.root):
+            if allow_outside_root or absolute_route.startswith(self.root):
                 return Route(self, absolute_route)
         return Route(self, '/'.join([self.root, route]))
 
