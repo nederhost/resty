@@ -29,6 +29,9 @@ class OperationalException(BaseException):
     # The group of exceptions that can be expected in "normal" operation.
     pass
 
+class ServerError(OperationalException):
+    pass
+
 class ClientError(OperationalException):
     pass
 
