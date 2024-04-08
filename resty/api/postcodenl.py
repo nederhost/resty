@@ -32,3 +32,18 @@ class PostcodeNLClient(resty.client.Client):
             *arg,
             **kwarg
         )
+        self.__autocomplete_session = None
+        
+    def set_autocomplete_session(self, value=None):
+        """
+        Set the specified value as the X-Autocomplete-Session header on
+        subsequent requests.  Set the value to None to disable sending the
+        header.
+        """
+        self.__autocomplete_session = value
+        
+    def request_hook(self, request):
+        # Add the autocomplete session header if required.
+        if self.__autocomplete_session is not None:
+            request.headers['X-Autocomplete-Session'] = self.__autocomplete_session
+            
