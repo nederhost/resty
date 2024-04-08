@@ -20,7 +20,7 @@ class PostcodeNLClient(resty.client.Client):
     The Postcode.NL API client.
     """
 
-    def __init__(self, *arg, url='https://api.postcode.eu/', **kwarg):
+    def __init__(self, *arg, url='https://api.postcode.eu', **kwarg):
         """
         Arguments in addition to those of the base class:
         * url -- the URL of the Postcode.NL API
