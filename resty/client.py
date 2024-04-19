@@ -51,7 +51,8 @@ class Client:
 
         # Update the request to add any necessary authorization information.
         if hasattr(self, 'auth_hook'): self.auth_hook(request)
-        self.auth.add_authorization(request)
+        if self.auth:
+            self.auth.add_authorization(request)
 
         # Serialize the request parameters. This should fill the
         # 'serialized' attribute.
