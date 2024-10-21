@@ -14,6 +14,7 @@ address = root.addresses.route('1234AB').route('123').get()
 
 import resty.client
 import resty.auth.basicauth
+import urllib.parse
 
 class PostcodeNLClient(resty.client.Client):
     """
@@ -33,6 +34,7 @@ class PostcodeNLClient(resty.client.Client):
             **kwarg
         )
         self.__autocomplete_session = None
+        self.transport.parameter_quoter = urllib.parse.quote	# encode spaces as %20
         
     def set_autocomplete_session(self, value=None):
         """
