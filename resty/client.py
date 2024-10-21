@@ -19,13 +19,16 @@ class Client:
         parser=resty.data.json.Parser(),
         auth=resty.auth.headerauth.Authorization(),
         transport=resty.transport.url.Transport(),
-        debuglevel=0
+        debuglevel=0,
+        timeout=None
     ):
         self.root = root if root else ''
         self.serializer = serializer
         self.parser = parser
         self.auth = auth
         self.transport = transport
+        if timeout is not None:
+            self.transport.set_timeout(timeout)
         if self.serializer:
             self.serializer.set_client(self)
         if self.parser:
