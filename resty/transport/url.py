@@ -3,28 +3,33 @@ import resty.transport
 
 import re
 import urllib.error
+import urllib.parse
 import urllib.request
 
 class Transport(resty.transport.TransportBase):
 
     RE_charset = re.compile('; charset=(\S+)')
     
-    def __init__(self, default_charset='utf-8', follow_redirects=False):
+    def __init__(self, default_charset='utf-8', follow_redirects=False, timeout=60):
         self.default_charset = default_charset
+        self.timeout = timeout
         handlers = []
         if not follow_redirects:
             handlers.append(NoRedirect)
         self.opener = urllib.request.build_opener(*handlers)
+        self.parameter_quoter = urllib.parse.quote_plus
 
     def process_request(self, request):
         url = request.route
+        print(url)
         if (request.route.startswith('http://') or request.route.startswith('https://')) and request.method == 'GET':
             # Special handling for HTTP GET requests: make sure all request
             # parameters are added to the URL and remove any post body as
             # that is not allowed with a GET request.
             if request.parameters:
-                url += '?' + urllib.parse.urlencode(request.parameters)
+                url += '?' + urllib.parse.urlencode(request.parameters, quote_via=self.parameter_quoter)
                 request.data = None
+            print(url)
         if request.data:
             for header, value in request.headers.items():
                 if header.lower() == 'content-type':
@@ -43,7 +48,7 @@ class Transport(resty.transport.TransportBase):
         urlrequest = urllib.request.Request(url, body, request.headers, method=request.method)
         if self.client.debuglevel > 0: self.client.debuginfo(self._urlrequest_as_string(urlrequest), '>')
         try:
-            urlresponse = self.opener.open(urlrequest)
+            urlresponse = self.opener.open(urlrequest, self.timeout)
         except urllib.error.HTTPError as e:
             if self.client.debuglevel > 0: self.client.debuginfo(self._urlresponse_as_string(e, e.fp.read()), '<')
             if e.code < 400:
