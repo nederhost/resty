@@ -48,7 +48,7 @@ class Transport(resty.transport.TransportBase):
         urlrequest = urllib.request.Request(url, body, request.headers, method=request.method)
         if self.client.debuglevel > 0: self.client.debuginfo(self._urlrequest_as_string(urlrequest), '>')
         try:
-            urlresponse = self.opener.open(urlrequest, self.timeout)
+            urlresponse = self.opener.open(urlrequest, timeout=self.timeout)
         except urllib.error.HTTPError as e:
             if self.client.debuglevel > 0: self.client.debuginfo(self._urlresponse_as_string(e, e.fp.read()), '<')
             if e.code < 400:
